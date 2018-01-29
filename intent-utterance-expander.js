@@ -14,7 +14,7 @@
     const wordsInsideExpandSlotRegex = /([^||()]+)/gi;
     const wordsInsideSlotRegex = /\{\((.*)\).*\|.*\}/i;
     const insideParensRegex = /\(.*\)/i;
-    const ssmlRegex = [
+    const ssmlWords = [
       'speak',
       'break',
       'lang',
@@ -25,7 +25,7 @@
       'say-as',
       'sub',
       'w',
-      'amazon:effect'].map((v) => `\<${v}[^>]*[^/]\>[^<]+?(?=\s*\<([^/]|/(?!${v}))))`);
+      'amazon:effect'];
 
 
     function expand(phrase) {
@@ -120,10 +120,23 @@
     }
 
     function removeInvalid(phrases) {
-      return phrases.filter(function (p) {
-        return ssmlRegex.filter(function (s) {
-          return s.test(p)
-        }).length === 0;
+      const pres = ['<', '</'];
+      return phrases.filter(function (phrase) {
+        return ssmlWords.filter(function (ssmlWord) {
+            let count = 0;
+            for(let pre of pres) {
+              let lastIndex = 0;
+              const searchWord = pre + ssmlWord;
+              while(lastIndex != -1){
+                lastIndex = phrase.indexOf(searchWord,lastIndex);
+                if(lastIndex != -1){
+                  count ++;
+                  lastIndex += searchWord.length;
+                }
+              }
+            }
+            return count %2 !== 0;
+          }).length === 0;
       });
     }
 
