@@ -14,6 +14,18 @@
     const wordsInsideExpandSlotRegex = /([^||()]+)/gi;
     const wordsInsideSlotRegex = /\{\((.*)\).*\|.*\}/i;
     const insideParensRegex = /\(.*\)/i;
+    const ssmlRegex = [
+      'speak',
+      'break',
+      'lang',
+      'mark',
+      'p',
+      'phoneme',
+      'prosody',
+      'say-as',
+      'sub',
+      'w'].map((v) => `\<${v}[^>]*[^/]\>[^<]+?(?=\s*\<([^/]|/(?!${v}))))`);
+
 
     function expand(phrase) {
       if (typeof phrase !== 'string') {
@@ -106,7 +118,15 @@
       }
     }
 
-    return expand(originalPhrase);
+    function removeInvalid(phrases) {
+      return phrases.filter(function (p) {
+        return ssmlRegex.filter(function (s) {
+          return s.test(p)
+        }).length === 0;
+      });
+    }
+
+    return removeInvalid(expand(originalPhrase));
   }
 
   if (typeof exports !== 'undefined') {
