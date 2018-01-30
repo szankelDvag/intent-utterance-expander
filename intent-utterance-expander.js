@@ -123,19 +123,20 @@
       const pres = ['<', '</'];
       return phrases.filter(function (phrase) {
         return ssmlWords.filter(function (ssmlWord) {
-            let count = 0;
+            let count = [], c = 0;
             for(let pre of pres) {
               let lastIndex = 0;
               const searchWord = pre + ssmlWord;
               while(lastIndex != -1){
                 lastIndex = phrase.indexOf(searchWord,lastIndex);
                 if(lastIndex != -1){
-                  count ++;
+                  c ++;
                   lastIndex += searchWord.length;
                 }
               }
+              count.push(c);
             }
-            return count %2 !== 0;
+            return count[0] === count[1] && count[0] % 2 === 0 && count[1] === 0;
           }).length === 0;
       });
     }
