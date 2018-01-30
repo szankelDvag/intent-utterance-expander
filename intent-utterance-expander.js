@@ -1,4 +1,4 @@
-(function(root) {
+(function (root) {
   'use strict';
 
   function intentUtteranceExpander(originalPhrase) {
@@ -15,17 +15,17 @@
     const wordsInsideSlotRegex = /\{\((.*)\).*\|.*\}/i;
     const insideParensRegex = /\(.*\)/i;
     const ssmlWords = [
-      {word:'speak', selfClosing: false},
-      {word:'break',selfClosing: true},
-      {word:'lang',selfClosing: false},
-      {word:'mark',selfClosing: false},
-      {word:'p',selfClosing: false},
-      {word:'phoneme',selfClosing: false},
-      {word:'prosody',selfClosing: false},
-      {word:'say-as',selfClosing: false},
-      {word:'sub',selfClosing: false},
-      {word:'w',selfClosing: false},
-      {word:'amazon:effect', selfClosing: false}];
+      {word: 'speak', selfClosing: false},
+      {word: 'break', selfClosing: true},
+      {word: 'lang', selfClosing: false},
+      {word: 'mark', selfClosing: false},
+      {word: 'p', selfClosing: false},
+      {word: 'phoneme', selfClosing: false},
+      {word: 'prosody', selfClosing: false},
+      {word: 'say-as', selfClosing: false},
+      {word: 'sub', selfClosing: false},
+      {word: 'w', selfClosing: false},
+      {word: 'amazon:effect', selfClosing: false}];
 
 
     function expand(phrase) {
@@ -100,18 +100,18 @@
           return [phrase];
         }
 
-        const joinedPhrases = phrases.map(function(p) {
+        const joinedPhrases = phrases.map(function (p) {
           return p.join(' ');
         });
 
-        return joinedPhrases.reduce(function(acc, p, i) {
+        return joinedPhrases.reduce(function (acc, p, i) {
           expandSlotRegex.lastIndex = 0;
           if (expandSlotRegex.test(p)) {
             acc[i] = expand(p);
           }
 
           return acc;
-        }, joinedPhrases).reduce(function(a, b) {
+        }, joinedPhrases).reduce(function (a, b) {
           return a.concat(b);
         }, []);
       } else {
@@ -122,14 +122,14 @@
     function removeInvalid(phrases) {
       const pres = ['<', '</'];
       return phrases.filter(function (phrase) {
-       return ssmlWords.filter(function (ssmlWord) {
+        return ssmlWords.filter(function (ssmlWord) {
             let count = [], c = 0;
-            for(let pre of pres) {
+            for (let pre of pres) {
               let lastIndex = 0;
               const searchWord = pre + ssmlWord.word;
-              while(lastIndex != -1){
-                lastIndex = phrase.indexOf(searchWord,lastIndex);
-                if(lastIndex != -1){
+              while (lastIndex != -1) {
+                lastIndex = phrase.indexOf(searchWord, lastIndex);
+                if (lastIndex != -1) {
                   c++;
                   lastIndex += searchWord.length;
                 }
@@ -137,8 +137,8 @@
               count.push(c);
             }
             return !ssmlWord.selfClosing ?
-            count[0] === count[1] && count[0] % 2 === 0 && count[1] % 2 === 0 :
-            (count[0] % 2 !== 0 || count[0] === 0) && count[1] === 0
+              count[0] === count[1] && count[0] % 2 === 0 && count[1] % 2 === 0 :
+              (count[0] % 2 !== 0 || count[0] === 0) && count[1] === 0
           }).length === ssmlWords.length;
       });
     }
@@ -152,7 +152,7 @@
     }
     exports.intentUtteranceExpander = intentUtteranceExpander;
   } else if (typeof define === 'function' && define.amd) {
-    define([], function() {
+    define([], function () {
       return intentUtteranceExpander;
     });
   } else {
