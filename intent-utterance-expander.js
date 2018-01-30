@@ -15,17 +15,17 @@
     const wordsInsideSlotRegex = /\{\((.*)\).*\|.*\}/i;
     const insideParensRegex = /\(.*\)/i;
     const ssmlWords = [
-      'speak',
-      'break',
-      'lang',
-      'mark',
-      'p',
-      'phoneme',
-      'prosody',
-      'say-as',
-      'sub',
-      'w',
-      'amazon:effect'];
+      {word:'speak', selfClosing: false},
+      {word:'break',selfClosing: true},
+      {word:'lang',selfClosing: false},
+      {word:'mark',selfClosing: false},
+      {word:'p',selfClosing: false},
+      {word:'phoneme',selfClosing: false},
+      {word:'prosody',selfClosing: false},
+      {word:'say-as',selfClosing: false},
+      {word:'sub',selfClosing: false},
+      {word:'w',selfClosing: false},
+      {word:'amazon:effect', selfClosing: false}];
 
 
     function expand(phrase) {
@@ -126,7 +126,7 @@
             let count = [], c = 0;
             for(let pre of pres) {
               let lastIndex = 0;
-              const searchWord = pre + ssmlWord;
+              const searchWord = pre + ssmlWord.word;
               while(lastIndex != -1){
                 lastIndex = phrase.indexOf(searchWord,lastIndex);
                 if(lastIndex != -1){
@@ -136,7 +136,9 @@
               }
               count.push(c);
             }
-            return count[0] === count[1] && count[0] % 2 === 0 && count[1] % 2 === 0;
+            return !ssmlWord.selfClosing ?
+              count[0] === count[1] && count[0] % 2 === 0 && count[1] % 2 === 0 :
+              count[0] % 2 !== 0 && count[1] === 0
           }).length === ssmlWords.length;
       });
     }
