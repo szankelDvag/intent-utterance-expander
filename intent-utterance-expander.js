@@ -122,7 +122,7 @@
     function removeInvalid(phrases) {
       const pres = ['<', '</'];
       return phrases.filter(function (phrase) {
-        let a = ssmlWords.filter(function (ssmlWord) {
+       return ssmlWords.filter(function (ssmlWord) {
             let count = [], c = 0;
             for(let pre of pres) {
               let lastIndex = 0;
