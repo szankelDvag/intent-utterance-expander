@@ -122,7 +122,7 @@
     function removeInvalid(phrases) {
       const pres = ['<', '</'];
       return phrases.filter(function (phrase) {
-        return ssmlWords.filter(function (ssmlWord) {
+        let a = ssmlWords.filter(function (ssmlWord) {
             let count = [], c = 0;
             for(let pre of pres) {
               let lastIndex = 0;
@@ -137,8 +137,8 @@
               count.push(c);
             }
             return !ssmlWord.selfClosing ?
-              count[0] === count[1] && count[0] % 2 === 0 && count[1] % 2 === 0 :
-              count[0] % 2 !== 0 && count[1] === 0
+            count[0] === count[1] && count[0] % 2 === 0 && count[1] % 2 === 0 :
+            (count[0] % 2 !== 0 || count[0] === 0) && count[1] === 0
           }).length === ssmlWords.length;
       });
     }
