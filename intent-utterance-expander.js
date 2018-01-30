@@ -130,14 +130,14 @@
               while(lastIndex != -1){
                 lastIndex = phrase.indexOf(searchWord,lastIndex);
                 if(lastIndex != -1){
-                  c ++;
+                  c++;
                   lastIndex += searchWord.length;
                 }
               }
               count.push(c);
             }
-            return count[0] === count[1] && count[0] % 2 === 0 && count[1] === 0;
-          }).length === 0;
+            return count[0] === count[1] && count[0] % 2 === 0 && count[1] % 2 === 0;
+          }).length === ssmlWords.length;
       });
     }
 
