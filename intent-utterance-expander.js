@@ -127,13 +127,11 @@
             for (let pre of pres) {
               let lastIndex = 0;
               const searchWord = pre + ssmlWord.word;
-              while (true) {
+              while (lastIndex != -1) {
                 lastIndex = phrase.indexOf(searchWord, lastIndex);
                 if (lastIndex != -1) {
                   c++;
                   lastIndex += searchWord.length;
-                } else {
-                  break;
                 }
               }
               count.push(c);
