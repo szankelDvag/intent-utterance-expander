@@ -123,9 +123,9 @@
       const pres = ['<', '</'];
       return phrases.filter(function (phrase) {
         return ssmlWords.filter(function (ssmlWord) {
-            let count = [], c = 0;
+            let count = [];
             for (let pre of pres) {
-              let lastIndex = 0;
+              let lastIndex = 0, c = 0;
               const searchWord = pre + ssmlWord.word;
               while (lastIndex != -1) {
                 lastIndex = phrase.indexOf(searchWord, lastIndex);
